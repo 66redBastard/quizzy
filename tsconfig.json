@@ -6,7 +6,7 @@
     "paths": {
       "@a-domains/*": ["app/*"],
       "@a-assets/*": ["assets/*"],
-      "@a-sass/*": ["app/sass/*"]
+      "@a-scss/*": ["scss/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

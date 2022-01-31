@@ -1,0 +1,38 @@
+// Media-queries
+$mobile-S: 425px;
+$mobile: 768px;
+$tablet: 1024px;
+$laptop-S: 1280px;
+$laptop-l: 1445px;
+
+// Colors
+$black: rgb(68, 69, 69);
+$white: rgb(255, 255, 255);
+$transparent: rgba(0, 0, 0, 0);
+$secondary: rgb(241, 53, 75);
+$gray-light: rgba(68, 69, 69, 0.1);
+$gray-light-background: rgb(229, 229, 229);
+$gray-medium: rgba(68, 69, 69, 0.5);
+$gray-dark: rgba(68, 69, 69, 0.8);
+$red-error: rgb(250, 83, 103);
+$success: #22b2b6;
+$header-bg: #816477;
+$footer-bg: #6fa8dc;
+
+// Fonts Sizes
+$fs-logo-desctop: 32px;
+$font-size-btn: 12px;
+$font-size-mobile-link: 18px;
+$font-weight-thin: 300;
+$font-weight-bold: 600;
+$font-weight-bolder: 700;
+// Headlines
+$font-size-h1: 35px;
+$font-size-h1-desktop: 55px;
+$font-size-h2: 28px;
+$font-size-h2-desktop: 40px;
+$font-size-h3: 28px;
+$font-size-h3-desktop: 40px;
+// Input errors text
+$font-size-small: 12px;
+$font-size-small-desktop: 13px;

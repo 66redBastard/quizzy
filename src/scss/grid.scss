@@ -1,0 +1,23 @@
+.d-flex {
+  @include display-flex;
+  &--jc-center {
+    @include display-flex;
+    justify-content: center;
+  }
+  &--jc-sb {
+    @include display-flex;
+    justify-content: space-between;
+  }
+  &--jc-sa {
+    @include display-flex;
+    justify-content: space-around;
+  }
+  &--jc-f-start {
+    @include display-flex;
+    justify-content: flex-start;
+  }
+  &--jc-f-end {
+    @include display-flex;
+    justify-content: flex-end;
+  }
+}

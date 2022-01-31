@@ -1,0 +1,25 @@
+// @import "@a-scss/_variables"; didn't work
+@import "../../../../scss/variables";
+
+.header {
+  height: 80px;
+  padding: 0 10px;
+  line-height: 80px;
+  color: $white;
+  background-color: $header-bg;
+
+  .logo {
+    font-size: $fs-logo-desctop;
+  }
+
+  .nav-menu {
+    &--item {
+      color: $success;
+      margin-right: 20px;
+      text-decoration: none;
+      &:last-of-type {
+        margin-right: none;
+      }
+    }
+  }
+}
