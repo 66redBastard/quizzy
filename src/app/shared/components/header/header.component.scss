@@ -9,16 +9,20 @@
   background-color: $header-bg;
 
   .logo {
+    color: $header-text-logo;
     font-size: $fs-logo-desctop;
   }
 
   .nav-menu {
     &--item {
-      color: $success;
+      color: $nav-link;
       margin-right: 20px;
       text-decoration: none;
       &:last-of-type {
         margin-right: none;
+      }
+      &:hover {
+        color: $nav-link-hov;
       }
     }
   }
