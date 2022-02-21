@@ -1,7 +1,7 @@
-import { Quiz } from '@a-domains/models/quiz.model';
+import { Question } from '@a-domains/models/questions.model';
 
 export interface QuizState {
-  quizzes: Quiz[];
+  quizzes: Question[];
 }
 
 export const initialState: QuizState = {

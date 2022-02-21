@@ -1,11 +1,5 @@
-export interface Question {
-  category?: string;
-  correctAnswer?: boolean;
-  difficulty?: string;
-  incorrectAnswers?: [];
-  question?: string;
-  type?: boolean;
-}
+import { Question } from './questions.model';
+
 export interface Quiz {
   id: string;
   title: string;

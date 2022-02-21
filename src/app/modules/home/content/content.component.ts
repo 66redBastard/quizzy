@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { Quiz } from '@a-domains/models/quiz.model';
-import { QuizState } from '@a-domains/store/quiz.state';
-import { loadQuizzes } from '@a-domains/store/actions/quiz.actions';
-import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
+
+import { Question } from '@a-domains/models/questions.model';
+import { QuizzesService } from '@a-domains/services/quizzes.service';
 
 @Component({
   selector: 'app-content',
@@ -12,13 +10,11 @@ import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit {
-  quizzes?: Observable<Quiz[]>;
+  quizzes?: Observable<Question[]>;
 
-  constructor(private store: Store<QuizState>) {}
+  constructor(private quizzesService: QuizzesService) {}
 
   ngOnInit(): void {
-    this.quizzes = this.store.select(getQuizzes);
-    console.log(this.quizzes);
-    this.store.dispatch(loadQuizzes());
+    this.quizzes = this.quizzesService.loadQuizzes();
   }
 }

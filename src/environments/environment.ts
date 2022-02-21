@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  triviaApi:
-    'https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=boolean',
+  triviaApi: 'https://opentdb.com/api.php?',
 };
 
 /*

@@ -11,7 +11,7 @@ import {
 } from 'rxjs/operators';
 import { QuizzesService } from '@a-domains/services/quizzes.service';
 import { loadQuizzes, loadQuizzesSuccess } from '../actions/quiz.actions';
-import { Quiz } from '@a-domains/models/quiz.model';
+import { QuestionCategory } from '@a-domains/shared/types/question-category';
 
 @Injectable()
 export class QuizEffects {
@@ -21,11 +21,11 @@ export class QuizEffects {
   ) {}
 
   loadQuiz$ = createEffect(
-    () => {
+    (entity = QuestionCategory) => {
       return this.actions$.pipe(
         ofType(loadQuizzes),
         mergeMap((action) => {
-          return this.quizzesService.getQuizzes().pipe(
+          return this.quizzesService.initQuizes().pipe(
             map((quizzes) => {
               console.log(quizzes);
               return loadQuizzesSuccess({ quizzes });
