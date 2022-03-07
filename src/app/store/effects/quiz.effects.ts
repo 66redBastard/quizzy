@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { EmptyError } from 'rxjs';
+import { EmptyError, of } from 'rxjs';
 import {
   catchError,
   concatMap,
   exhaustMap,
   map,
   mergeMap,
+  switchMap,
   tap,
 } from 'rxjs/operators';
 import { QuizzesService } from '@a-domains/services/quizzes.service';
@@ -24,14 +25,15 @@ export class QuizEffects {
     (entity = QuestionCategory) => {
       return this.actions$.pipe(
         ofType(loadQuizzes),
-        mergeMap((action) => {
-          return this.quizzesService.initQuizes().pipe(
-            map((quizzes) => {
-              console.log(quizzes);
-              return loadQuizzesSuccess({ quizzes });
-            })
-          );
-        })
+        mergeMap(() => of(this.quizzesService.initQuizes()))
+        // mergeMap((action) => {
+        //   return this.quizzesService.initQuizes().pipe(
+        //     map((quizzes) => {
+        //       console.log(quizzes);
+        //       return loadQuizzesSuccess({ action });
+        //     })
+        //   );
+        // })
       );
     },
     { dispatch: false }

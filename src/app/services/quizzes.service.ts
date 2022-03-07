@@ -15,7 +15,7 @@ import { QuestionCategory } from '@a-domains/shared/types/question-category';
   providedIn: 'root',
 })
 export class QuizzesService {
-  private url: string = `${environment.triviaApi}amount=${query.amount}&category=${query.category}1&difficulty=easy&type=boolean`;
+  // private url: string = `${environment.triviaApi}amount=${query.amount}&category=${query.category}1&difficulty=easy&type=boolean`;
   private quizzesTitle = [
     { type: QuestionCategory.Art, title: 'Art' },
     { type: QuestionCategory.Comics, title: 'Comics' },
@@ -34,7 +34,7 @@ export class QuizzesService {
   }
 
   initQuizes() {
-    forkJoin([
+    forkJoin(
       this.quizzesTitle.map((quizTitleData) => {
         return this.getQuizzes({
           category: quizTitleData.type,
@@ -43,12 +43,14 @@ export class QuizzesService {
           map((questions: any) => {
             return {
               title: quizTitleData,
-              questions: questions.results,
+              questions: questions.results.map(
+                (question: any) => new QuestionFilter(question)
+              ),
             };
           })
         );
-      }),
-    ]);
+      })
+    ).subscribe(console.log);
   }
 
   loadQuizzes() {
@@ -59,19 +61,51 @@ export class QuizzesService {
   }
 
   getQuizzes(query: { category: number; amount: number }) {
-    return this.http.get(this.url).pipe(
-      map((data: any) => {
-        const quizzes = [];
-        console.log('SERVICE === ', data);
-        for (let key in data) {
-          quizzes.push({ ...data[key] });
-        }
-        return quizzes;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error(error);
-        return throwError(error);
-      })
-    );
+    return this.http
+      .get(
+        `${environment.triviaApi}amount=${query.amount}&category=${query.category}1&difficulty=easy&type=boolean`
+      )
+      .pipe(
+        map((data: any) => {
+          const quizzes = [];
+          for (let key in data) {
+            quizzes.push({ ...data[key] });
+          }
+          console.log('SERVICE === ', data);
+          return quizzes;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error(error);
+          return throwError(error);
+        })
+      );
+  }
+}
+
+class QuestionFilter {
+  category: QuestionCategory;
+  question: string;
+  type: boolean;
+  answers: { answer: string; isCorrect: boolean }[];
+
+  constructor(question: any) {
+    this.category = question.category;
+    this.type = question.type;
+    this.question = question.question;
+
+    this.answers = this.formatAnswer(question);
+  }
+
+  formatAnswer(question: { correct_answer: any; incorrect_answer: any[] }) {
+    const answers = [{ answer: question.correct_answer, isCorrect: true }];
+
+    question.incorrect_answer.forEach((incorrectAnswer: any) => {
+      answers.push({
+        answer: incorrectAnswer,
+        isCorrect: false,
+      });
+    });
+
+    return answers;
   }
 }
