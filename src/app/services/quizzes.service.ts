@@ -34,23 +34,24 @@ export class QuizzesService {
   }
 
   initQuizes() {
-    forkJoin(
-      this.quizzesTitle.map((quizTitleData) => {
-        return this.getQuizzes({
-          category: quizTitleData.type,
-          amount: 10,
-        }).pipe(
-          map((questions: any) => {
-            return {
-              title: quizTitleData,
-              questions: questions.results.map(
-                (question: any) => new QuestionFilter(question)
-              ),
-            };
-          })
-        );
-      })
-    ).subscribe(console.log);
+    loadQuizzes(),
+      forkJoin(
+        this.quizzesTitle.map((quizTitleData) => {
+          return this.getQuizzes({
+            category: quizTitleData.type,
+            amount: 10,
+          }).pipe(
+            map((questions: any) => {
+              return {
+                title: quizTitleData,
+                questions: questions.results.map(
+                  (question: any) => new QuestionFilter(question)
+                ),
+              };
+            })
+          );
+        })
+      ).subscribe(console.log);
   }
 
   loadQuizzes() {
