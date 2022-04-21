@@ -1,8 +1,8 @@
 <p>Home content works!</p>
 <div class="container-data" *ngIf="quizzes | async">
-    <!-- <ul *ngFor="let key of quizzes | async">
+    <ul *ngFor="let key of quizzes | async">
         <li>
-            {{ key[0] }}
+            {{ key.question }}
         </li>
-    </ul> -->
+    </ul>
 </div>
