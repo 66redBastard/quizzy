@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { combineLatest, Observable, throwError } from 'rxjs';
+import { combineLatest, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Question } from '@a-domains/models/questions.model';
@@ -11,26 +11,25 @@ import { Question } from '@a-domains/models/questions.model';
 // import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
 import { QuestionCategory } from '@a-domains/shared/types/question-category';
 
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizzesService {
-  private quizzesTitle = [
-    { type: QuestionCategory.Art, title: 'Art' },
-    { type: QuestionCategory.Comics, title: 'Comics' },
-    { type: QuestionCategory.Films, title: 'Films' },
-    { type: QuestionCategory.Geography, title: 'Geography' },
-    { type: QuestionCategory.History, title: 'History' },
-    { type: QuestionCategory.Music, title: 'Music' },
-    { type: QuestionCategory.ScienceComputers, title: 'Science Computers' },
-    { type: QuestionCategory.Sports, title: 'Sports' },
-    { type: QuestionCategory.Vehicles, title: 'Vehicles' },
-    { type: QuestionCategory.VideoGames, title: 'VideoGames' },
-  ];
+  data: any;
+  subjectData = new Subject<any>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.subjectData.subscribe((value) => {
+      console.log(value);
+      this.data = value;
+    });
+  }
+
+  sendData(data: any) {
+    this.subjectData.next(data);
+  }
 
   getQuizzes(query: {
     category: number;
@@ -44,7 +43,7 @@ export class QuizzesService {
         map((data: any) => {
           const quizzes: any[] = [];
           console.log(data.results);
-          quizzes.push(new Quiz(data.results));
+          quizzes.push(data.results);
 
           return quizzes;
         }),
@@ -54,32 +53,35 @@ export class QuizzesService {
         })
       );
   }
-}
-
-class Quiz {
-  id: string;
-  title: string;
-  description: string | undefined;
-  questions: Question[];
-
-  constructor(data: any) {
-    this.id = uuid();
-    this.title = this.getTitle(data);
-    this.questions = this.getQuestions(data);
-  }
-
-  getTitle(data: any) {
-    return data[0].category;
-  }
-  getQuestions(data: any) {
-    const questions = [];
-    for (let key in data) {
-      questions.push(data[key].question);
-    }
-
-    return questions;
+  ngOnChanges() {
+    // subjectData.subscribe(x => console.log(x));
   }
 }
+
+// class Quiz {
+//   id: string;
+//   title: string;
+//   description: string | undefined;
+//   questions: Question[];
+
+//   constructor(data: any) {
+//     this.id = uuid();
+//     this.title = this.getTitle(data);
+//     this.questions = this.getQuestions(data);
+//   }
+
+//   getTitle(data: any) {
+//     return data[0].category;
+//   }
+//   getQuestions(data: any) {
+//     const questions = [];
+//     for (let key in data) {
+//       questions.push(data[key].question);
+//     }
+
+//     return questions;
+//   }
+// }
 
 // class QuestionFilter {
 //   category: QuestionCategory;

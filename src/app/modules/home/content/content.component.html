@@ -1,8 +1,11 @@
-<p>Home content works!</p>
-<div class="container-data" *ngIf="quizzes | async">
-    <ul *ngFor="let key of quizzes | async">
+<!-- <p>Home content works!</p> -->
+<div class="container-data" *ngIf="quizzes">
+    <ul *ngFor="let key of quizzes">
         <li>
-            {{ key.question }}
+            {{ key.title }}
+        </li>
+        <li>
+            {{key.questions}}
         </li>
     </ul>
 </div>

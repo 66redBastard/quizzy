@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, Subject } from 'rxjs';
 // import { Store } from '@ngrx/store';
 // import { QuizState } from '@a-domains/store/quiz.state';
 // import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Question } from '@a-domains/models/questions.model';
 import { QuizzesService } from '@a-domains/services/quizzes.service';
 import { QuestionCategory } from '@a-domains/shared/types/question-category';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-content',
@@ -15,23 +16,58 @@ import { QuestionCategory } from '@a-domains/shared/types/question-category';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit {
-  quizzes?: Observable<Question[]>;
+  quizzes: any[] = [];
+  // subjectData = new Subject<any>();
 
-  constructor(private serviceQuizzes: QuizzesService) {
-    this.serviceQuizzes
-      .getQuizzes({
-        category: new QuizCategory().category,
-        amount: Math.floor(Math.random() * 30) + 1,
-      })
-      .subscribe(console.log);
+  constructor(private serviceQuizzes: QuizzesService) {}
+
+  ngOnInit(): void {
+    forkJoin([
+      this.serviceQuizzes
+        .getQuizzes({
+          category: new QuizCategory().category,
+          amount: Math.floor(Math.random() * 30) + 1,
+        })
+        .subscribe((data: any) => {
+          data.map((data: any) => {
+            this.quizzes.push(new Quiz(data));
+          });
+          console.log(this.quizzes);
+        }),
+      this.serviceQuizzes.sendData(this.quizzes),
+    ]);
   }
 
-  ngOnInit(): void {}
   // 1. store out
   // 2. on init call service method
   // 3. in content component OnInit make calls ended and return (store in arr) data to service
   // 4. show qiuzzes on page
 }
+class Quiz {
+  id: string;
+  title: string;
+  description: string | undefined;
+  questions: Question[];
+
+  constructor(data: any) {
+    this.id = uuid();
+    this.title = this.getTitle(data);
+    this.questions = this.getQuestions(data);
+  }
+
+  getTitle(data: any) {
+    return data[0].category;
+  }
+  getQuestions(data: any) {
+    const questions = [];
+    for (let key in data) {
+      questions.push(data[key].question);
+    }
+
+    return questions;
+  }
+}
+
 class QuizCategory {
   category: number;
 
