@@ -55,19 +55,19 @@ export class QuizEffects {
   //   );
   // });
 
-  loadQuiz$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(loadQuizzes),
-      mergeMap((Actions) => {
-        return this.quizzesService.getQuizzes().pipe(
-          map((quizzes) => {
-            console.log('EFFECTS QUIZZES', quizzes);
-            return loadQuizzesSuccess({ quizzes });
-          })
-        );
-      })
-    );
-  });
+  // loadQuiz$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(loadQuizzes),
+  //     mergeMap((Actions) => {
+  //       return this.quizzesService.getQuizzes().pipe(
+  //         map((quizzes) => {
+  //           console.log('EFFECTS QUIZZES', quizzes);
+  //           return loadQuizzesSuccess({ quizzes });
+  //         })
+  //       );
+  //     })
+  //   );
+  // });
 
   // loadQuiz$ = createEffect(
   //   (entity = QuestionCategory) => {

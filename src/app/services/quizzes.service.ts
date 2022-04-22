@@ -5,10 +5,10 @@ import { combineLatest, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Question } from '@a-domains/models/questions.model';
-import { Store } from '@ngrx/store';
-import { QuizState } from '@a-domains/store/quiz.state';
-import { loadQuizzes } from '@a-domains/store/actions/quiz.actions';
-import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
+// import { Store } from '@ngrx/store';
+// import { QuizState } from '@a-domains/store/quiz.state';
+// import { loadQuizzes } from '@a-domains/store/actions/quiz.actions';
+// import { getQuizzes } from '@a-domains/store/selectors/quiz.selector';
 import { QuestionCategory } from '@a-domains/shared/types/question-category';
 
 import { v4 as uuid } from 'uuid';
@@ -17,7 +17,6 @@ import { v4 as uuid } from 'uuid';
   providedIn: 'root',
 })
 export class QuizzesService {
-  // private url: string = `${environment.triviaApi}amount=${query.amount}&category=${query.category}1&difficulty=easy&type=boolean`;
   private quizzesTitle = [
     { type: QuestionCategory.Art, title: 'Art' },
     { type: QuestionCategory.Comics, title: 'Comics' },
@@ -31,11 +30,16 @@ export class QuizzesService {
     { type: QuestionCategory.VideoGames, title: 'VideoGames' },
   ];
 
-  constructor(private http: HttpClient, private store: Store<QuizState[]>) {}
+  constructor(private http: HttpClient) {}
 
-  getQuizzes(): Observable<Question[]> {
+  getQuizzes(query: {
+    category: number;
+    amount: number;
+  }): Observable<Question[]> {
     return this.http
-      .get(`${environment.triviaApi}amount=10&category=21&difficulty=easy`)
+      .get(
+        `${environment.triviaApi}amount=${query.amount}&category=${query.category}&difficulty=easy`
+      )
       .pipe(
         map((data: any) => {
           const quizzes: any[] = [];
